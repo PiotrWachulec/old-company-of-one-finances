@@ -13,19 +13,19 @@ namespace API
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
         private static ILogger _logger;
         private static ILogger _loggerForApi;
         
+        private const string CompanyOfOneFinancesDbConnectionString = "ConnectionStrings:CompanyOfOneFinancesDb";
+
         public Startup(IConfiguration configuration)
         {
             ConfigureLogger();
             
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -39,8 +39,7 @@ namespace API
         {
             
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwaggerDocumentation();
