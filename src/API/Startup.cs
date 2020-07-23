@@ -1,3 +1,4 @@
+using API.Configuration.ExecutionContext;
 using API.Configuration.Extensions;
 using API.Configuration.Validation;
 using Autofac;
@@ -37,6 +38,7 @@ namespace API
             services.AddSwaggerDocumentation();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
             
             services.AddProblemDetails(x =>
             {
