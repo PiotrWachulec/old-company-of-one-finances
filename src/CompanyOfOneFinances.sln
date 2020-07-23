@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Domain", "Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Application", "BuildingBlocks.Application\BuildingBlocks.Application.csproj", "{078D10B8-0128-422A-92A6-F58F9A7A53B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.EventBus", "BuildingBlocks.EventBus\BuildingBlocks.EventBus.csproj", "{3A9AD28F-BD69-4A5F-B64B-03C6A2E74176}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildingBlocks.Infrastructure", "BuildingBlocks.Infrastructure\BuildingBlocks.Infrastructure.csproj", "{3B8FF7C6-6391-48A9-B50F-D10FCE1930C3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +32,20 @@ Global
 		{078D10B8-0128-422A-92A6-F58F9A7A53B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{078D10B8-0128-422A-92A6-F58F9A7A53B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{078D10B8-0128-422A-92A6-F58F9A7A53B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A9AD28F-BD69-4A5F-B64B-03C6A2E74176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A9AD28F-BD69-4A5F-B64B-03C6A2E74176}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A9AD28F-BD69-4A5F-B64B-03C6A2E74176}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A9AD28F-BD69-4A5F-B64B-03C6A2E74176}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B8FF7C6-6391-48A9-B50F-D10FCE1930C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B8FF7C6-6391-48A9-B50F-D10FCE1930C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B8FF7C6-6391-48A9-B50F-D10FCE1930C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B8FF7C6-6391-48A9-B50F-D10FCE1930C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3997C12E-0830-4524-BD0C-7590250E62E7} = {8555A937-79D3-4E59-BCB8-62D3BACBFFB8}
 		{D5B5E27F-B60C-455F-8838-F80AD72493F1} = {D359BCA5-4E70-41BE-A504-A263277178B6}
 		{078D10B8-0128-422A-92A6-F58F9A7A53B8} = {D359BCA5-4E70-41BE-A504-A263277178B6}
+		{3A9AD28F-BD69-4A5F-B64B-03C6A2E74176} = {D359BCA5-4E70-41BE-A504-A263277178B6}
+		{3B8FF7C6-6391-48A9-B50F-D10FCE1930C3} = {D359BCA5-4E70-41BE-A504-A263277178B6}
 	EndGlobalSection
 EndGlobal
