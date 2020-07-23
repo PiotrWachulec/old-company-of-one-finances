@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+    company-of-one-finances-db:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: company-of-one-finances-db
+        restart: unless-stopped
+        networks:
+            - company-of-one-finances 
+        environment:
+            - ACCEPT_EULA=Y
+        env_file:
+            - db.env
+        ports: 
+            - 1423:1433
+        volumes:
+            - company-of-one-finances-db:/var/opt/mssql
+
+networks:
+    company-of-one-finances:
+        name: company-of-one-finances-network
+
+volumes:
+    company-of-one-finances-db:
+        driver: local
