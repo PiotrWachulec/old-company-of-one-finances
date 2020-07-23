@@ -13,6 +13,7 @@
     <ItemGroup>
         <PackageReference Include="Autofac" Version="4.9.2" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+        <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="5.1.1" />
         <PackageReference Include="Serilog" Version="2.10.0-dev-01191" />
         <PackageReference Include="Serilog.AspNetCore" Version="3.4.0-dev-00173" />
         <PackageReference Include="Serilog.Formatting.Compact" Version="1.1.1-dev-00940" />
@@ -23,6 +24,11 @@
 
     <ItemGroup>
         <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.0-msbuild3-final" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BuildingBlocks.Application\BuildingBlocks.Application.csproj" />
+      <ProjectReference Include="..\BuildingBlocks.Domain\BuildingBlocks.Domain.csproj" />
     </ItemGroup>
 
 </Project>

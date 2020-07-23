@@ -1,5 +1,9 @@
 using API.Configuration.Extensions;
+using API.Configuration.Validation;
 using Autofac;
+using BuildingBlocks.Application;
+using BuildingBlocks.Domain;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +37,12 @@ namespace API
             services.AddSwaggerDocumentation();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
+            services.AddProblemDetails(x =>
+            {
+                x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
+                x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
+            });
         }
         
         public void ConfigureContainer(ContainerBuilder builder)
