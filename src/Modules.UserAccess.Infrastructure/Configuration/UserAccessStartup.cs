@@ -3,7 +3,9 @@ using BuildingBlocks.Application;
 using BuildingBlocks.Application.Emails;
 using BuildingBlocks.Infrastructure.Emails;
 using Modules.UserAccess.Infrastructure.Configuration.Email;
+using Modules.UserAccess.Infrastructure.Configuration.Logging;
 using Serilog;
+using Serilog.Extensions.Logging;
 
 namespace Modules.UserAccess.Infrastructure.Configuration
 {
@@ -36,8 +38,10 @@ namespace Modules.UserAccess.Infrastructure.Configuration
             ILogger logger)
         {
             var containerBuilder = new ContainerBuilder();
+            var loggerFactory = new SerilogLoggerFactory(logger);
 
             containerBuilder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
+            containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "UserAccess")));
 
             containerBuilder.RegisterInstance(executionContextAccessor);
 
