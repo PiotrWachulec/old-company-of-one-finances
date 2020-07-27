@@ -34,6 +34,8 @@ namespace Modules.UserAccess.Infrastructure.Configuration
                 emailsConfiguration,
                 emailSender,
                 logger);
+
+            QuartzStartup.Initialize(logger);
         }
 
         private static void ConfigureCompositionRoot(
