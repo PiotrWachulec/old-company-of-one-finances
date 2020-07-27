@@ -1,4 +1,5 @@
 using System.Reflection;
+using Modules.UserAccess.Application.Configuration.Commands;
 
 namespace Modules.UserAccess.Infrastructure.Configuration
 {
