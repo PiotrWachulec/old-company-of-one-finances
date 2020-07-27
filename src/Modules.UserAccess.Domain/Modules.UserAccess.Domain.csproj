@@ -5,8 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="UserRegistrations" />
-      <Folder Include="Users" />
+      <ProjectReference Include="..\BuildingBlocks.Domain\BuildingBlocks.Domain.csproj" />
     </ItemGroup>
 
 </Project>
