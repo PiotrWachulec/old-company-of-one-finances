@@ -29,7 +29,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration.Processing.Inbox
                                "[InboxMessage].[Id], " +
                                "[InboxMessage].[Type], " +
                                "[InboxMessage].[Data] " +
-                               "FROM [meetings].[InboxMessages] AS [InboxMessage] " +
+                               "FROM [users].[InboxMessages] AS [InboxMessage] " +
                                "WHERE [InboxMessage].[ProcessedDate] IS NULL";
 
             var messages = await connection.QueryAsync<InboxMessageDto>(sql);
