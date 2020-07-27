@@ -32,7 +32,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration.Processing
                 .InstancePerLifetimeScope();
 
             builder.RegisterGenericDecorator(
-                typeof(BuildingBlocks.Infrastructure.UnitOfWork.UnitOfWorkCommandHandlerDecorator<>),
+                typeof(Decorators.UnitOfWork.UnitOfWorkCommandHandlerDecorator<>),
                 typeof(ICommandHandler<>));
 
             builder.RegisterGenericDecorator(
