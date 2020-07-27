@@ -1,5 +1,8 @@
 using Autofac;
 using BuildingBlocks.Application;
+using BuildingBlocks.Application.Emails;
+using BuildingBlocks.Infrastructure.Emails;
+using Modules.UserAccess.Infrastructure.Configuration.Email;
 using Serilog;
 
 namespace Modules.UserAccess.Infrastructure.Configuration
@@ -11,20 +14,32 @@ namespace Modules.UserAccess.Infrastructure.Configuration
         public static void Initialize(
             string connectionString,
             IExecutionContextAccessor executionContextAccessor,
-            
+            EmailsConfiguration emailsConfiguration,
+            IEmailSender emailSender,
             ILogger logger)
         {
             var loggerModule = logger.ForContext("Module", "UserAccess");
             
             ConfigureCompositionRoot(
-                connectionString);
+                connectionString,
+                executionContextAccessor,
+                emailsConfiguration,
+                emailSender,
+                logger);
         }
 
         private static void ConfigureCompositionRoot(
-            string connectionString)
+            string connectionString,
+            IExecutionContextAccessor executionContextAccessor,
+            EmailsConfiguration emailsConfiguration,
+            IEmailSender emailSender,
+            ILogger logger)
         {
             var containerBuilder = new ContainerBuilder();
 
+            containerBuilder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
+
+            containerBuilder.RegisterInstance(executionContextAccessor);
 
             _container = containerBuilder.Build();
             
