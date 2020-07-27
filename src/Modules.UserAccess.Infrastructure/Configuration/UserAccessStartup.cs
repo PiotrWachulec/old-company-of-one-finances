@@ -5,6 +5,7 @@ using BuildingBlocks.Infrastructure.Emails;
 using Modules.UserAccess.Infrastructure.Configuration.Email;
 using Modules.UserAccess.Infrastructure.Configuration.EventBus;
 using Modules.UserAccess.Infrastructure.Configuration.Logging;
+using Modules.UserAccess.Infrastructure.Mediation;
 using Serilog;
 using Serilog.Extensions.Logging;
 
@@ -44,6 +45,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration
             containerBuilder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
             containerBuilder.RegisterModule(new EventBusModule());
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "UserAccess")));
+            containerBuilder.RegisterModule(new MediatorModule());
 
             containerBuilder.RegisterInstance(executionContextAccessor);
 
