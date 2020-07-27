@@ -61,6 +61,8 @@ namespace API
             var container = app.ApplicationServices.GetAutofacRoot();
             
             InitializeModules(container);
+
+            app.UseMiddleware<CorrelationMiddleware>();
             
             app.UseSwaggerDocumentation();
 
