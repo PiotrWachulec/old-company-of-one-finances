@@ -6,6 +6,9 @@ using Modules.UserAccess.Infrastructure.Configuration.DataAccess;
 using Modules.UserAccess.Infrastructure.Configuration.Email;
 using Modules.UserAccess.Infrastructure.Configuration.EventBus;
 using Modules.UserAccess.Infrastructure.Configuration.Logging;
+using Modules.UserAccess.Infrastructure.Configuration.Processing;
+using Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using Modules.UserAccess.Infrastructure.Configuration.Quartz;
 using Modules.UserAccess.Infrastructure.Mediation;
 using Serilog;
 using Serilog.Extensions.Logging;
@@ -48,6 +51,9 @@ namespace Modules.UserAccess.Infrastructure.Configuration
             containerBuilder.RegisterModule(new EventBusModule());
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "UserAccess")));
             containerBuilder.RegisterModule(new MediatorModule());
+            containerBuilder.RegisterModule(new OutboxModule());
+            containerBuilder.RegisterModule(new ProcessingModule());
+            containerBuilder.RegisterModule(new QuartzModule());
 
             containerBuilder.RegisterInstance(executionContextAccessor);
 
