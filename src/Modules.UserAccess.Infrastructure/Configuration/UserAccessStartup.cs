@@ -26,7 +26,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration
             IEmailSender emailSender,
             ILogger logger)
         {
-            var loggerModule = logger.ForContext("Module", "UserAccess");
+            var moduleLogger = logger.ForContext("Module", "UserAccess");
             
             ConfigureCompositionRoot(
                 connectionString,
@@ -35,7 +35,9 @@ namespace Modules.UserAccess.Infrastructure.Configuration
                 emailSender,
                 logger);
 
-            QuartzStartup.Initialize(logger);
+            QuartzStartup.Initialize(moduleLogger);
+
+            EventBusStartup.Initialize(moduleLogger);
         }
 
         private static void ConfigureCompositionRoot(
