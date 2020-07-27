@@ -26,7 +26,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox
 
         public async Task<Unit> Handle(ProcessOutboxCommand command, CancellationToken cancellationToken)
         {
-            var connection = this._sqlConnectionFactory.GetOpenConnection();
+            var connection = _sqlConnectionFactory.GetOpenConnection();
             const string sql = "SELECT " +
                                "[OutboxMessage].[Id], " +
                                "[OutboxMessage].[Type], " +
@@ -50,7 +50,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox
 
                     using (LogContext.Push(new OutboxMessageContextEnricher(request)))
                     {
-                        await this._mediator.Publish(request, cancellationToken);
+                        await _mediator.Publish(request, cancellationToken);
 
                         await connection.ExecuteAsync(sqlUpdateProcessedDate, new
                         {
@@ -72,6 +72,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox
             {
                 _notification = notification;
             }
+
             public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
             {
                 logEvent.AddOrUpdateProperty(new LogEventProperty("Context", new ScalarValue($"OutboxMessage:{_notification.Id.ToString()}")));
