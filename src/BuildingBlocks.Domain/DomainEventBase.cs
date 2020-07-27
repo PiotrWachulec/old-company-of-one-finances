@@ -8,10 +8,10 @@ namespace BuildingBlocks.Domain
         
         public DateTime OccurredOn { get; }
 
-        public DomainEventBase(Guid id, DateTime occurredOn)
+        public DomainEventBase()
         {
-            Id = id;
-            OccurredOn = occurredOn;
+            Id = Guid.NewGuid();
+            OccurredOn = DateTime.UtcNow;
         }
     }
 }
