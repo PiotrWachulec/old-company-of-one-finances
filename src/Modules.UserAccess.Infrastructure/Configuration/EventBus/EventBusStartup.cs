@@ -4,7 +4,7 @@ using Serilog;
 
 namespace Modules.UserAccess.Infrastructure.Configuration.EventBus
 {
-    public static class EventsBusStartup
+    public static class EventBusStartup
     {
         public static void Initialize(ILogger logger)
         {
