@@ -1,3 +1,4 @@
+using API.Configuration.Authorization;
 using API.Configuration.ExecutionContext;
 using API.Configuration.Extensions;
 using API.Configuration.Validation;
@@ -10,6 +11,7 @@ using BuildingBlocks.Infrastructure.Emails;
 using Hellang.Middleware.ProblemDetails;
 using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Validation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -64,6 +66,17 @@ namespace API
                 x.Map<InvalidCommandException>(ex => new InvalidCommandProblemDetails(ex));
                 x.Map<BusinessRuleValidationException>(ex => new BusinessRuleValidationExceptionProblemDetails(ex));
             });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(HasPermissionAttribute.HasPermissionPolicyName, policyBuilder =>
+                {
+                    policyBuilder.Requirements.Add(new HasPermissionAuthorizationRequirement());
+                    policyBuilder.AddAuthenticationSchemes(IdentityServerAuthenticationDefaults.AuthenticationScheme);
+                });
+            });
+
+            services.AddScoped<IAuthorizationHandler, HasPermissionAuthorizationHandler>();
         }
         
         public void ConfigureContainer(ContainerBuilder builder)
