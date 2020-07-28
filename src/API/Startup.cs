@@ -8,12 +8,15 @@ using BuildingBlocks.Application;
 using BuildingBlocks.Domain;
 using BuildingBlocks.Infrastructure.Emails;
 using Hellang.Middleware.ProblemDetails;
+using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Modules.UserAccess.Application.IdentityServer;
 using Modules.UserAccess.Infrastructure.Configuration;
 using Serilog;
 using Serilog.Formatting.Compact;
@@ -26,7 +29,17 @@ namespace API
         private static ILogger _logger;
         private static ILogger _loggerForApi;
         
+        
+        // Configuration keys
         private const string CompanyOfOneFinancesDbConnectionString = "ConnectionStrings:CompanyOfOneFinancesDb";
+        private const string EmailConfigurationFromEmail = "EmailsConfiguration:FromEmail";
+        
+        private const string IdentityServerClientId = "IdentityServerConfiguration:ClientId";
+        private const string IdentityServerClientSecret = "IdentityServerConfiguration:ClientSecret";
+        private const string IdentityServerScopeName = "IdentityServerConfiguration:ScopeName";
+        private const string IdentityServerScopeDisplayName = "IdentityServerConfiguration:ScopeDisplayName";
+        private const string IdentityServerAuthority = "IdentityServerConfiguration:Authority";
+        
 
         public Startup(IConfiguration configuration)
         {
@@ -40,6 +53,8 @@ namespace API
             services.AddControllers();
 
             services.AddSwaggerDocumentation();
+
+            ConfigureIdentityServer(services);
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>();
@@ -66,6 +81,8 @@ namespace API
             
             app.UseSwaggerDocumentation();
 
+            app.UseIdentityServer();
+
             if (env.IsDevelopment())
             {
                 app.UseProblemDetails();
@@ -80,6 +97,45 @@ namespace API
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
         
+        private void ConfigureIdentityServer(IServiceCollection services)
+        {
+            var identityServerConfig = InitializeIdentityServerConfig();
+
+            services.AddIdentityServer()
+                .AddInMemoryIdentityResources(IdentityServerConfigProvider.GetIdentityResources())
+                .AddInMemoryApiResources(IdentityServerConfigProvider.GetApis())
+                .AddInMemoryClients(IdentityServerConfigProvider.GetClients())
+                .AddInMemoryPersistedGrants()
+                .AddProfileService<ProfileService>()
+                .AddDeveloperSigningCredential();
+
+            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme, x =>
+                {
+                    x.Authority = identityServerConfig.Authority;
+                    x.ApiName = identityServerConfig.ScopeName;
+                    x.RequireHttpsMetadata = false;
+                });
+        }
+
+        private IdentityServerConfig InitializeIdentityServerConfig()
+        {
+            IdentityServerConfig identityServerConfig = new IdentityServerConfig
+            {
+                ClientId = _configuration[IdentityServerClientId],
+                ClientSecret = _configuration[IdentityServerClientSecret],
+                ScopeName = _configuration[IdentityServerScopeName],
+                ScopeDisplayName = _configuration[IdentityServerScopeDisplayName],
+                Authority = _configuration[IdentityServerAuthority]
+            };
+
+            IdentityServerConfigProvider.Initialize(identityServerConfig);
+            
+            return identityServerConfig;
+        }
+
         private static void ConfigureLogger()
         {
             _logger =  new LoggerConfiguration()   
@@ -98,7 +154,7 @@ namespace API
             var httpContextAccessor = container.Resolve<IHttpContextAccessor>();
             var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
             
-            var emailsConfiguration = new EmailsConfiguration(_configuration["EmailsConfiguration:FromEmail"]);
+            var emailsConfiguration = new EmailsConfiguration(_configuration[EmailConfigurationFromEmail]);
             
             UserAccessStartup.Initialize(
                 _configuration[CompanyOfOneFinancesDbConnectionString],
