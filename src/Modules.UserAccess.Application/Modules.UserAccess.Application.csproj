@@ -5,6 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="9.0.1" />
+      <PackageReference Include="IdentityServer4" Version="3.1.2" />
       <PackageReference Include="MediatR" Version="8.0.2" />
     </ItemGroup>
 
