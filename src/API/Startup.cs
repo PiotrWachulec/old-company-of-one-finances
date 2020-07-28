@@ -101,8 +101,6 @@ namespace API
                 app.UseProblemDetails();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthorization();
