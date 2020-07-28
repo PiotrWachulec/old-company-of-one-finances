@@ -3,6 +3,7 @@ using BuildingBlocks.Application;
 using BuildingBlocks.Application.Emails;
 using BuildingBlocks.Infrastructure.Emails;
 using Modules.UserAccess.Infrastructure.Configuration.DataAccess;
+using Modules.UserAccess.Infrastructure.Configuration.Domain;
 using Modules.UserAccess.Infrastructure.Configuration.Email;
 using Modules.UserAccess.Infrastructure.Configuration.EventBus;
 using Modules.UserAccess.Infrastructure.Configuration.Logging;
@@ -51,6 +52,7 @@ namespace Modules.UserAccess.Infrastructure.Configuration
             var loggerFactory = new SerilogLoggerFactory(logger);
 
             containerBuilder.RegisterModule(new DataAccessModule(connectionString, loggerFactory));
+            containerBuilder.RegisterModule(new DomainModule());
             containerBuilder.RegisterModule(new EmailModule(emailsConfiguration, emailSender));
             containerBuilder.RegisterModule(new EventBusModule());
             containerBuilder.RegisterModule(new LoggingModule(logger.ForContext("Module", "UserAccess")));
