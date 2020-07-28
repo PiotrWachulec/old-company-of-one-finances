@@ -5,9 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Dapper" Version="2.0.35" />
       <PackageReference Include="FluentValidation" Version="9.0.1" />
       <PackageReference Include="IdentityServer4" Version="3.1.2" />
       <PackageReference Include="MediatR" Version="8.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BuildingBlocks.Application\BuildingBlocks.Application.csproj" />
+      <ProjectReference Include="..\Modules.UserAccess.Domain\Modules.UserAccess.Domain.csproj" />
     </ItemGroup>
 
 </Project>
