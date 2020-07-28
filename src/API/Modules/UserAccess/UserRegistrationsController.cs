@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Modules.UserAccess.Application.Contracts;
+using Modules.UserAccess.Application.UserRegistrations.ConfirmUserRegistration;
 using Modules.UserAccess.Application.UserRegistrations.RegisterNewUser;
 
 namespace API.Modules.UserAccess
@@ -23,6 +25,15 @@ namespace API.Modules.UserAccess
         {
             await _userAccessModule.ExecuteCommandAsync(new RegisterNewUserCommand(request.Login, request.Password,
                 request.Email, request.FirstName, request.LastName));
+
+            return Ok();
+        }
+        
+        [AllowAnonymous]
+        [HttpPatch("{userRegistrationId}/confirm")]
+        public async Task<IActionResult> ConfirmRegistration(Guid userRegistrationId)
+        {
+            await _userAccessModule.ExecuteCommandAsync(new ConfirmUserRegistrationCommand(userRegistrationId));
 
             return Ok();
         }
