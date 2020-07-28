@@ -40,6 +40,14 @@ namespace Modules.UserAccess.Infrastructure.Configuration.DataAccess
                 .AsSelf()
                 .As<DbContext>()
                 .InstancePerLifetimeScope();
+            
+            var infrastructureAssembly = typeof(UserAccessContext).Assembly;
+
+            builder.RegisterAssemblyTypes(infrastructureAssembly)
+                .Where(type => type.Name.EndsWith("Repository"))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope()
+                .FindConstructorsWith(new AllConstructorFinder());
         }
     }
 }
