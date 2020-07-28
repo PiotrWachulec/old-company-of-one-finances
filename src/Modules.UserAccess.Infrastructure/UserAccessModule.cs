@@ -1,23 +1,32 @@
 using System.Threading.Tasks;
+using Autofac;
+using MediatR;
 using Modules.UserAccess.Application.Contracts;
+using Modules.UserAccess.Infrastructure.Configuration;
+using Modules.UserAccess.Infrastructure.Configuration.Processing;
 
 namespace Modules.UserAccess.Infrastructure
 {
     public class UserAccessModule : IUserAccessModule
     {
-        public Task<TResult> ExecuteCommandAsync<TResult>(ICommand<TResult> command)
+        public async Task<TResult> ExecuteCommandAsync<TResult>(ICommand<TResult> command)
         {
-            throw new System.NotImplementedException();
+            return await CommandsExecutor.Execute(command);
         }
 
-        public Task ExecuteCommandAsync(ICommand command)
+        public async Task ExecuteCommandAsync(ICommand command)
         {
-            throw new System.NotImplementedException();
+            await CommandsExecutor.Execute(command);
         }
 
-        public Task<TResult> ExecuteQueryAsync<TResult>(IQuery<TResult> query)
+        public async Task<TResult> ExecuteQueryAsync<TResult>(IQuery<TResult> query)
         {
-            throw new System.NotImplementedException();
+            using (var scope = UserAccessCompositionRoot.BeginLifetimeScope())
+            {
+                var mediator = scope.Resolve<IMediator>();
+
+                return await mediator.Send(query);
+            }
         }
     }
 }
