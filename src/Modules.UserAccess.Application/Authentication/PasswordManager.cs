@@ -23,8 +23,8 @@ namespace Modules.UserAccess.Application.Authentication
         public static bool VerifyHashedPassword(string hashedPassword, string passwordToVerify)
         {
             var parts = hashedPassword.Split('.', 2);
-            var salt = Convert.FromBase64String(parts[1]);
-            var storedHashedPassword = Convert.FromBase64String(parts[0]);
+            var salt = Convert.FromBase64String(parts[0]);
+            var storedHashedPassword = Convert.FromBase64String(parts[1]);
 
             using (var hmac = new HMACSHA512(salt))
             {
