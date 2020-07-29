@@ -4,11 +4,11 @@ namespace Modules.UserAccess.Domain.Users.Events
 {
     public class UserCreatedDomainEvent : DomainEventBase
     {
-        public UserId Id { get; }
+        public UserId UserId { get; }
         
-        public UserCreatedDomainEvent(UserId id)
+        public UserCreatedDomainEvent(UserId userId)
         {
-            Id = id;
+            UserId = userId;
         }
     }
 }
