@@ -2,6 +2,7 @@ using System.Collections.Specialized;
 using Modules.UserAccess.Infrastructure.Configuration.Processing.Inbox;
 using Modules.UserAccess.Infrastructure.Configuration.Processing.InternalCommands;
 using Modules.UserAccess.Infrastructure.Configuration.Processing.Outbox;
+using Modules.UserAccess.Infrastructure.Configuration.Quartz.Jobs;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Logging;
@@ -15,9 +16,11 @@ namespace Modules.UserAccess.Infrastructure.Configuration.Quartz
         {
             logger.Information("Quartz starting...");
 
-            var schedulerConfiguration = new NameValueCollection();
-            schedulerConfiguration.Add("quartz.scheduler.instanceName", "CompanyOfOneFinances");
-            
+            var schedulerConfiguration = new NameValueCollection
+            {
+                {"quartz.scheduler.instanceName", "CompanyOfOneFinances"}
+            };
+
             ISchedulerFactory schedulerFactory = new StdSchedulerFactory(schedulerConfiguration);
             IScheduler scheduler = schedulerFactory.GetScheduler().GetAwaiter().GetResult();
 
@@ -58,7 +61,22 @@ namespace Modules.UserAccess.Infrastructure.Configuration.Quartz
                     .Build();
             scheduler.ScheduleJob(processInternalCommandsJob, triggerCommandsProcessing).GetAwaiter().GetResult();
 
+            ScheduleExpireUserRegistrationsJob(scheduler);
+
             logger.Information("Quartz started.");
+        }
+
+        private static void ScheduleExpireUserRegistrationsJob(IScheduler scheduler)
+        {
+            var expireUserRegistrationsJob = JobBuilder.Create<ExpireUserRegistrationsJob>().Build();
+            var triggerCommandsProcessing =
+                TriggerBuilder
+                    .Create()
+                    .StartNow()
+                    .WithCronSchedule("50 * * ? * *")
+                    .Build();
+            
+            scheduler.ScheduleJob(expireUserRegistrationsJob, triggerCommandsProcessing).GetAwaiter().GetResult();
         }
     }
 }
