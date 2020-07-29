@@ -24,7 +24,7 @@ namespace Modules.UserAccess.Infrastructure.Domain.UserRegistrations
 
             builder.OwnsOne<UserRegistrationStatus>("_status", b =>
             {
-                b.Property(x => x.Value).HasColumnName("StatusCode");
+                b.Property(x => x.Code).HasColumnName("StatusCode");
             });
         }
     }

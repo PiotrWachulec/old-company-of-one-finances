@@ -7,11 +7,11 @@ namespace Modules.UserAccess.Domain.UserRegistrations
         public static UserRegistrationStatus WaitingForConfirmation => new UserRegistrationStatus(nameof(WaitingForConfirmation));
         public static UserRegistrationStatus Confirmed => new UserRegistrationStatus(nameof(Confirmed));
         public static UserRegistrationStatus Expired => new UserRegistrationStatus(nameof(Expired));
-        public string Value { get; }
+        public string Code { get; }
 
-        private UserRegistrationStatus(string value)
+        private UserRegistrationStatus(string code)
         {
-            Value = value;
+            Code = code;
         }
     }
 }
