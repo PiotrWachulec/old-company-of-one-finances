@@ -86,7 +86,7 @@ namespace Modules.UserAccess.Domain.UserRegistrations
 
         public void Expire()
         {
-            this.CheckRule(new UserRegistrationCannotBeExpiredMoreThanOnceRule(_status));
+            CheckRule(new UserRegistrationCannotBeExpiredMoreThanOnceRule(_status));
 
             _status = UserRegistrationStatus.Expired;
 
