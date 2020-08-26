@@ -14,6 +14,16 @@ namespace UI
         private static ILogger _logger;
         private static ILogger _loggerForApi;
 
+        // Configuration keys
+        private const string CompanyOfOneFinancesDbConnectionString = "ConnectionStrings:CompanyOfOneFinancesDb";
+        private const string EmailConfigurationFromEmail = "EmailsConfiguration:FromEmail";
+
+        private const string IdentityServerClientId = "IdentityServerConfiguration:ClientId";
+        private const string IdentityServerClientSecret = "IdentityServerConfiguration:ClientSecret";
+        private const string IdentityServerScopeName = "IdentityServerConfiguration:ScopeName";
+        private const string IdentityServerScopeDisplayName = "IdentityServerConfiguration:ScopeDisplayName";
+        private const string IdentityServerAuthority = "IdentityServerConfiguration:Authority";
+
         public Startup(IConfiguration configuration)
         {
             ConfigureLogger();
