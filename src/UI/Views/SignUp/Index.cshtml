@@ -4,7 +4,7 @@
     ViewData["Title"] = "Sign up";
 }
 
-<form class="form-signin">
+<form class="form-signin" asp-action="RegisterNewUser">
     <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
     <input type="text" id="signUpFirstName" class="form-control" placeholder="First name" asp-for="FirstName" required autofocus>
     <input type="text" class="form-control" placeholder="Last name" asp-for="LastName" required>
