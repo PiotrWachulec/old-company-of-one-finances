@@ -1,26 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Formatting.Compact;
 
 namespace UI
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+        private static ILogger _logger;
+        private static ILogger _loggerForApi;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            ConfigureLogger();
+
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
@@ -53,6 +53,19 @@ namespace UI
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+        
+        private static void ConfigureLogger()
+        {
+            _logger =  new LoggerConfiguration()   
+                .Enrich.FromLogContext()
+                .WriteTo.Console(outputTemplate:"[{Timestamp:HH:mm:ss} {Level:u3}] [{Module}] [{Context}] {Message:lj}{NewLine}{Exception}")
+                .WriteTo.RollingFile(new CompactJsonFormatter(),"logs/logs")
+                .CreateLogger();
+
+            _loggerForApi = _logger.ForContext("Module", "UI");
+
+            _loggerForApi.Information("Logger configured");
         }
     }
 }
