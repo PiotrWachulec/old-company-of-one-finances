@@ -32,8 +32,7 @@ namespace API.Configuration.ExecutionContext
                 throw new ApplicationException("User context is not available");             
             }
         }
-            
-        
+
         public Guid CorrelationId
         {
             get
