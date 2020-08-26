@@ -16,4 +16,9 @@
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Modules\UserAccess\Modules.UserAccess.Application\Modules.UserAccess.Application.csproj" />
+      <ProjectReference Include="..\Modules\UserAccess\Modules.UserAccess.Infrastructure\Modules.UserAccess.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
