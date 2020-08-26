@@ -1,10 +1,16 @@
+using Autofac;
+using BuildingBlocks.Application;
+using BuildingBlocks.Infrastructure.Emails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Modules.UserAccess.Infrastructure.Configuration;
 using Serilog;
 using Serilog.Formatting.Compact;
+using UI.Configuration.ExecutionContext;
 
 namespace UI
 {
@@ -79,6 +85,21 @@ namespace UI
             _loggerForApi = _logger.ForContext("Module", "UI");
 
             _loggerForApi.Information("Logger configured");
+        }
+
+        private void InitializeModules(ILifetimeScope container)
+        {
+            var httpContextAccessor = container.Resolve<IHttpContextAccessor>();
+            var executionContextAccessor = new ExecutionContextAccessor(httpContextAccessor);
+
+            var emailsConfiguration = new EmailsConfiguration(_configuration[EmailConfigurationFromEmail]);
+
+            UserAccessStartup.Initialize(
+                _configuration[CompanyOfOneFinancesDbConnectionString],
+                executionContextAccessor,
+                emailsConfiguration,
+                null,
+                _logger);
         }
     }
 }
