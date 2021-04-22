@@ -50,7 +50,20 @@ resource sqlDb 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
   name: sqlDbName
   location: location
   parent: sqlServer
+
   sku: {
+    name: 'GP_S_Gen5'
+    tier: 'GeneralPurpose'
+    family: 'Gen5'
+    capacity: 1
+  }
+
+  properties: {
+    autoPauseDelay: 10
+    maxSizeBytes: 1000000000
+    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    catalogCollation: 'SQL_Latin1_General_CP1_CI_AS'
+    zoneRedundant: false
   }
 }
 
