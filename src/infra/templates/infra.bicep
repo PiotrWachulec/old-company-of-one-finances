@@ -7,6 +7,7 @@ var appServiceName      = 'INZ-${envType}-AppService'
 var keyVaultName        = 'INZ-${envType}-KV'
 var sqlSrvName          = 'INZ-${envType}-SQL-SRV'
 var sqlDbName           = 'INZ-${envType}-SQL-DB'
+var storageAccountName  = '${concat('inz', toLower(envType), 'sa')}'
 
 var sqlSrvDbAdminLogin    = 'inz${toLower(envType)}dbsrvadmin'
 var sqlSrvDbAdminPassword = '${concat('P', uniqueString(resourceGroup().id, passwordSalt), 't', '$%#')}'
@@ -65,6 +66,15 @@ resource sqlDb 'Microsoft.Sql/servers/databases@2020-11-01-preview' = {
     collation: 'SQL_Latin1_General_CP1_CI_AS'
     catalogCollation: 'SQL_Latin1_General_CP1_CI_AS'
     zoneRedundant: false
+  }
+}
+
+resource stg 'Microsoft.Storage/storageAccounts@2019-06-01' = {
+  name: storageAccountName
+  location: location
+  kind: 'StorageV2'
+  sku: {
+    name: 'Standard_LRS'
   }
 }
 
