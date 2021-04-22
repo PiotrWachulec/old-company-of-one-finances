@@ -11,8 +11,9 @@ var sqlDbName           = 'INZ-${envType}-SQL-DB'
 var sqlSrvDbAdminLogin    = 'inz${toLower(envType)}dbsrvadmin'
 var sqlSrvDbAdminPassword = '${concat('P', uniqueString(resourceGroup().id, passwordSalt), 't', '$%#')}'
 
-var dbSrvAdminLoginSecretName     = 'DB-SRV-Admin-Login'
-var dbSrvAdminLoginSecretPassword = 'DB-SRV-Admin-Password'
+var dbSrvAdminLoginSecretName         = 'DB-SRV-Admin-Login'
+var dbSrvAdminLoginSecretPassword     = 'DB-SRV-Admin-Password'
+var dbSrvAdminLoginSecretPasswordSalt = 'DB-SRV-Admin-Password-Salt-Generator'
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-12-01' = {
   name: appServicePlanName
@@ -96,5 +97,13 @@ resource dbSrvAdminPasswordSecret 'Microsoft.KeyVault/vaults/secrets@2019-09-01'
   parent: keyVault
   properties: {
     value: sqlSrvDbAdminPassword
+  }
+}
+
+resource dbSrvAdminPasswordSalt 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
+  name: dbSrvAdminLoginSecretPasswordSalt
+  parent: keyVault
+  properties: {
+    value: passwordSalt
   }
 }
